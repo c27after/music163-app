@@ -1,6 +1,6 @@
 <template>
   <div class="searchTop">
-    <van-icon name="arrow-left" size="30" @click="$router.go(-1)"/>
+    <van-icon name="arrow-left" size="30" @click="$router.go(-1)" />
     <input
       class="searchBox"
       type="text"
@@ -22,7 +22,7 @@
       >{{ item }}</span
     >
   </div>
-  <div class="songs">
+  <div class="songs" v-if="!showHotSearch">
     <div
       class="songsItem"
       v-for="(item, i) in songs"
@@ -50,10 +50,29 @@
       </div>
     </div>
   </div>
+  <div class="hotSearch" v-else>
+    <h2><van-icon name="fire-o" color="red" />热搜榜</h2>
+    <div
+      class="hotItem"
+      v-for="(hot, i) in hotSearch.data"
+      :key="hot"
+      @click="serachHistory(hot.searchWord)"
+    >
+      <div>
+        <span style="margin-right: 10px">{{ i + 1 }}.</span>
+        <span>{{ hot.searchWord }}</span>
+      </div>
+      <span
+        ><van-icon name="fire-o" color="red" />{{
+          this.countScore(hot.score)
+        }}</span
+      >
+    </div>
+  </div>
 </template>
 
 <script>
-import { searchSongs } from '../request/api/search'
+import { searchSongs, searchHotSongs } from '../request/api/search'
 import { mapMutations } from 'vuex'
 import { Toast } from 'vant'
 export default {
@@ -63,12 +82,16 @@ export default {
       keyWorldList: [],
       searchKey: '',
       songs: [],
+      hotSearch: [],
+      showHotSearch: true,
     }
   },
+
   mounted() {
     this.keyWorldList = JSON.parse(localStorage.getItem('keyWorldList'))
       ? JSON.parse(localStorage.getItem('keyWorldList'))
       : []
+    this.searchHot()
   },
 
   methods: {
@@ -92,6 +115,7 @@ export default {
           Toast('网络繁忙，请重试！')
         }
         this.searchKey = ''
+        this.showHotSearch = false
       }
     },
     async serachHistory(key) {
@@ -101,10 +125,18 @@ export default {
       })
       let res = await searchSongs(key)
       this.songs = res.data.result.songs
+      this.showHotSearch = false
       if (this.songs === undefined) {
         Toast('网络繁忙，请重试！')
+        this.showHotSearch = true
       }
       console.log(this.songs)
+    },
+    //展示热门搜索
+    async searchHot() {
+      let { data } = await searchHotSongs()
+      this.hotSearch = data
+      console.log(this.hotSearch)
     },
     delHistory() {
       localStorage.removeItem('keyWorldList')
@@ -119,6 +151,11 @@ export default {
         this.$store.state.playList.length - 1
       )
     },
+    countScore(num) {
+      if (num > 100000000) return (num / 100000000).toFixed(1) + '亿'
+      else if (num > 10000) return (num / 10000).toFixed(1) + '万'
+    },
+
     ...mapMutations(['playSearchSong']),
   },
 }
@@ -152,9 +189,6 @@ export default {
   margin: 5px 15px;
   border-radius: 30px;
 }
-.history {
-  height: 150px;
-}
 
 .songs {
   padding: 0 7px;
@@ -185,6 +219,17 @@ export default {
       font-size: 22px;
       margin-right: 7px;
     }
+  }
+}
+.hotSearch {
+  padding: 5px 15px;
+  margin-bottom: 60px;
+  .hotItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    font-size: 16px;
   }
 }
 </style>

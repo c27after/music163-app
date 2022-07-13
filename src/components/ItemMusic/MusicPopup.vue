@@ -14,14 +14,18 @@
       <van-icon name="share-o" size="30" />
     </div>
   </div>
-  <div class="PopupMid" v-show="isLyricShow">
+  <div class="PopupMid" v-show="isLyricShow" @click="toggleHandle">
     <img
       class="needle"
       src="../../assets/needle-ab.png"
       alt=""
       :class="{ needle_active: !isbtnShow }"
     />
-    <img class="cipan" src="../../assets/cipan.png" alt="" />
+    <img
+      class="cipan"
+      src="../../assets/d7e4e3a244701ee85fecb5d4f6b5bd57.png"
+      alt=""
+    />
     <img
       class="midimg"
       :src="musicList.al.picUrl"
@@ -29,7 +33,7 @@
       :class="{ midimg_paused: isbtnShow, midimg_active: !isbtnShow }"
     />
   </div>
-  <div class="lyric" ref="lyric">
+  <div class="lyric" ref="lyric" v-show="!isLyricShow" @click="toggleHandle">
     <p
       v-for="lyric in lyric"
       :key="lyric"
@@ -68,7 +72,7 @@ import { mapMutations, mapState } from 'vuex'
 export default {
   data() {
     return {
-      isLyricShow: false,
+      isLyricShow: true,
     }
   },
   components: {
@@ -123,6 +127,9 @@ export default {
   },
   props: ['musicList', 'play', 'isbtnShow'],
   methods: {
+    toggleHandle() {
+      this.isLyricShow = !this.isLyricShow
+    },
     ...mapMutations(['updateDetailShow']),
   },
 }

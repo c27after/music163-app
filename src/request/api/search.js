@@ -6,3 +6,10 @@ export function searchSongs(data) {
     url: `/search?keywords=${data}`,
   })
 }
+//热搜
+export function searchHotSongs() {
+  return server({
+    methods: 'GET',
+    url: '/search/hot/detail',
+  })
+}
