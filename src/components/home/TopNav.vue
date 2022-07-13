@@ -5,7 +5,11 @@
       <span>我的</span><span class="active">发现</span><span>歌单</span
       ><span>视频</span>
     </div>
-    <div class="topRight"><van-icon name="search" size="30" /></div>
+    <div class="topRight">
+      <router-link to="/search"
+        ><van-icon name="search" size="30"
+      /></router-link>
+    </div>
   </div>
 </template>
 

@@ -1,21 +1,26 @@
-import { createRouter,createWebHashHistory } from "vue-router";
-import Home from "../view/Home.vue"
-import ItemMusic from "../view/ItemMusic.vue"
+import { createRouter, createWebHashHistory } from 'vue-router'
+import Home from '../view/Home.vue'
+import ItemMusic from '../view/ItemMusic.vue'
+import Search from '../view/Search.vue'
 
-const routes =[
+const routes = [
   {
-    path:"/",
-    component:Home
+    path: '/',
+    component: Home,
   },
   {
-    path:"/ItemMusic",
-    component:ItemMusic
-  }
+    path: '/ItemMusic',
+    component: ItemMusic,
+  },
+  {
+    path: '/search',
+    component: Search,
+  },
 ]
 
 const router = createRouter({
   routes,
-  history:createWebHashHistory()
+  history: createWebHashHistory(),
 })
 
 export default router

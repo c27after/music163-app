@@ -28,6 +28,9 @@ export default createStore({
     updateIsBtnShow(state, value) {
       state.isbtnShow = value
     },
+    playSearchSong(state,value){
+      state.playList.push(value)
+    },
     updateplayList(state, value) {
       state.playList = value
       console.log(state.playList)
@@ -45,6 +48,9 @@ export default createStore({
       state.currentTime = value
       console.log(state.currentTime)
     },
+    pushPlayLsit(state,value){
+      state.playList.push(value)
+    }
   },
   actions: {
     async getLyric(context, value) {

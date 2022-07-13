@@ -29,9 +29,16 @@
       :class="{ midimg_paused: isbtnShow, midimg_active: !isbtnShow }"
     />
   </div>
-  <div class="lyric">
-    <p v-for="lyric in lyric" :key="lyric" :class="{active:(currentTime*1000>=lyric.time&&currentTime*1000<=lyric.pre)}">
-    {{lyric.lrc}}
+  <div class="lyric" ref="lyric">
+    <p
+      v-for="lyric in lyric"
+      :key="lyric"
+      :class="{
+        active:
+          currentTime * 1000 >= lyric.time && currentTime * 1000 <= lyric.pre,
+      }"
+    >
+      {{ lyric.lrc }}
     </p>
   </div>
   <div class="PopupFooter">
@@ -68,7 +75,7 @@ export default {
     Vue3Marquee,
   },
   computed: {
-    ...mapState(['lyricList','currentTime']),
+    ...mapState(['lyricList', 'currentTime']),
     lyric() {
       let arr
       if (this.lyricList.lyric) {
@@ -77,32 +84,42 @@ export default {
           let sec = item.slice(4, 6)
           let mill = item.slice(7, 10)
           let lrc = item.slice(11, item.length)
-          let time=parseInt(min)*60*1000+parseInt(sec)*1000+parseInt(mill)
-          if(isNaN(Number(mill))){
-            mill=item.slice(7,9)
-            lrc=item.slice(10,item.length)
-            let time=parseInt(min)*60*1000+parseInt(sec)*1000+parseInt(mill)
+          let time =
+            parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill)
+          if (isNaN(Number(mill))) {
+            mill = item.slice(7, 9)
+            lrc = item.slice(10, item.length)
+            let time =
+              parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill)
           }
 
-           //console.log(min, sec, Number(mill), lrc)
-           return {min, sec, mill, lrc,time}
+          //console.log(min, sec, Number(mill), lrc)
+          return { min, sec, mill, lrc, time }
         })
-        arr.forEach((element,i) => {
-          if(i===arr.length-1){
-            element.pre=0
-          }else{
-            element.pre=arr[i+1].time
+        arr.forEach((element, i) => {
+          if (i === arr.length - 1) {
+            element.pre = 0
+          } else {
+            element.pre = arr[i + 1].time
           }
-
-        });
+        })
       }
-      console.log(arr);
+      console.log(arr)
       return arr
+    },
+  },
+  watch: {
+    currentTime: function () {
+      let p = document.querySelector('p.active')
+      console.log([p])
+      if (p.offsetTop > 300) {
+        this.$refs.lyric.scrollTop = p.offsetTop - 300
+      }
     },
   },
   mounted() {
     //console.log(this.musicList)
-    console.log(this.lyricList.lyric);
+    console.log(this.lyricList.lyric)
   },
   props: ['musicList', 'play', 'isbtnShow'],
   methods: {
@@ -205,23 +222,21 @@ export default {
     align-items: center;
   }
 }
-.lyric{
+.lyric {
   width: 100%;
-  height: 9rem ;
+  height: 9rem;
   overflow: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
-  p{
+  p {
     color: rgb(0, 0, 0);
     margin-bottom: 15px;
-    
   }
-  .active{
-      color: #fff;
-      font-size: 20px;
-      font-weight: bold;
-    }
-
+  .active {
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+  }
 }
 </style>
