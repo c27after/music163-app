@@ -17,6 +17,7 @@ export default createStore({
         id: 488249475,
       },
     ],
+    mvInfo: {},
     playListIndex: 0,
     //暂停按钮的显示
     isbtnShow: true,
@@ -28,7 +29,7 @@ export default createStore({
     updateIsBtnShow(state, value) {
       state.isbtnShow = value
     },
-    playSearchSong(state,value){
+    playSearchSong(state, value) {
       state.playList.push(value)
     },
     updateplayList(state, value) {
@@ -48,9 +49,13 @@ export default createStore({
       state.currentTime = value
       console.log(state.currentTime)
     },
-    pushPlayLsit(state,value){
+    pushPlayLsit(state, value) {
       state.playList.push(value)
-    }
+    },
+    updateMvUrl(state, value) {
+      state.mvUrl = value
+      console.log('store', state.mvUrl)
+    },
   },
   actions: {
     async getLyric(context, value) {

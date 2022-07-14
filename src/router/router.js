@@ -16,6 +16,15 @@ const routes = [
     path: '/search',
     component: Search,
   },
+  {
+    path: '/video',
+    component: () => import('../view/Video.vue'),
+  },
+  {
+    path: '/mv/:id',
+    name: 'mvPlay',
+    component: () => import('../view/mvPlay'),
+  },
 ]
 
 const router = createRouter({

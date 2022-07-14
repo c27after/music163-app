@@ -3,7 +3,7 @@
     <div class="topLeft"><van-icon name="setting-o" size="30" /></div>
     <div class="topContent">
       <span>我的</span><span class="active">发现</span><span>歌单</span
-      ><span>视频</span>
+      ><router-link to="/video"><span>视频</span></router-link>
     </div>
     <div class="topRight">
       <router-link to="/search"
@@ -32,5 +32,8 @@
       font-weight: bold;
     }
   }
+}
+a {
+  color: #000;
 }
 </style>

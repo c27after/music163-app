@@ -80,6 +80,7 @@ export default {
   }
   .songs {
     padding: 0 7px;
+    margin-bottom: 60px;
     .songsItem {
       display: flex;
       height: 50px;
